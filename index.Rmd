@@ -182,7 +182,7 @@ complete_data %>% ggplot(aes(Avg_Land_Temperature,Avg_Sea_Ice)) + geom_smooth(me
 
 ### Concluding Remarks
 
-  *The relationships seen between sea ice coverage, temperature, and CO2 concentration in this dataset support the idea of CO2 emissions causing climate change, which is thus causing global warming and the melting of sea ice.*
+  *The relationships seen between sea ice coverage, temperature, and CO2 concentration in this dataset support the idea of CO2 emissions causing climate change, which in turn causes global warming and the melting of sea ice.*
 
 ### Data Citations
 
