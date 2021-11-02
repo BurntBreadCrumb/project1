@@ -21,7 +21,7 @@ tidy=TRUE, tidy.opts=list(width.cutoff=60), R.options=list(max.print=100))
 
 ### Jennifer Chen
 
-#### Introduction 
+### Introduction 
 
 Paragraph or two introducing your datasets and variables, why they are interesting to you, etc.
 
@@ -33,11 +33,13 @@ land_temp_data <- read_csv("Global Land Temperatures.csv")
 CO2_data <- read_csv("CO2_Data_Mauna_Loa.csv")
 ```
  
-  The first dataset I am analyzing in this project contains measurements of sea ice coverage from the northern and southern hemispheres (represented by the variable "Extent" which is measured in 10^6 sq km). The measurements were taken approximately every other day from 1978-2015. This dataset also includes the variables "Missing" (10^6 km^2), "Source Data" (links to the raw data), and "hemisphere". The second dataset contains various measurements of global temperature (in Celsius) per month from 1750 to 2015. This dataset also includes variables for maximum/minimum land temperature, land and ocean average temperature, and uncertainty for each variable. The third dataset contains mean measurements of atmospheric CO2 saturation from 1958 to 2020. This dataset also includes the variable "unc" (uncertainty due to weather systems measured in ppm).
-  The data is specified to come from Mauna Loa because the Mauna Loa Observatory has the longest record of direct atmospheric CO2 measurements. The sea ice data comes from The National Snow and Ice Data Center. The global land temperature data comes from Berkley Earth. Lastly, the atmospheric CO2 dataset was sourced from the National Oceanic and Atmospheric Adminstration.
-  I think these datasets are interesting due to the relevancy of climate change and carbon dioxide pollution. I have done several research projects on the topic of climate change before; however, I had to rely on data analysis from published studies in order to investigate the topic. Thus, I am interested to see what conclusions can be drawn by analyzing raw data using R studio.
+  *The first dataset I am analyzing in this project contains measurements of sea ice coverage from the northern and southern hemispheres (represented by the variable "Extent" which is measured in 10^6 sq km). The measurements were taken approximately every other day from 1978-2015. This dataset also includes the variables "Missing" (10^6 km^2), "Source Data" (links to the raw data), and "hemisphere". The second dataset contains various measurements of global temperature (in Celsius) per month from 1750 to 2015. This dataset also includes variables for maximum/minimum land temperature, land and ocean average temperature, and uncertainty for each variable. The third dataset contains mean measurements of atmospheric CO2 saturation from 1958 to 2020. This dataset also includes the variable "unc" (uncertainty due to weather systems measured in ppm).*
+  
+  *The data is specified to come from Mauna Loa because the Mauna Loa Observatory has the longest record of direct atmospheric CO2 measurements. The sea ice data comes from The National Snow and Ice Data Center. The global land temperature data comes from Berkley Earth. Lastly, the atmospheric CO2 dataset was sourced from the National Oceanic and Atmospheric Adminstration.*
+  
+  *I think these datasets are interesting due to the relevancy of climate change and carbon dioxide pollution. I have done several research projects on the topic of climate change before; however, I had to rely on data analysis from published studies in order to investigate the topic. Thus, I am interested to see what conclusions can be drawn by analyzing raw data using R studio.*
 
-#### Tidying: Reshaping
+### Tidying: Reshaping
 
 If your datasets are tidy already, demonstrate that you can reshape data with pivot wider/longer here (e.g., untidy and then retidy). Alternatively, it may be easier to wait until the wrangling section so you can reshape your summary statistics. Note here if you are going to do this.
 
@@ -53,7 +55,7 @@ tidy_sea_ice_data %>% glimpse()
 #tidy_sea_ice_data %>% group_by(Year) %>% summarize("Avg_Annual_Sea_Ice"=mean(Global_Ice)) %>% glimpse() -> aa_sea_ice
 #full_join(tidy_sea_ice_data,aa_sea_ice) -> Tidy_Sea_Ice
 ```
-  I tidied the sea ice dataset using pivot_wider in order to create separate columns for the north and south hemispheres. I did this because the measurements for both hemispheres were taken on the same day and I wanted to remove the redundant dates. I ended up doing this by separating the dataset by hemisphere, then merging again by "Year", "Month", and "Day" to produce a compact dataset. I also removed the "Source Data" column because I cited the source of this dataset separately. For the purpose of analyzing data trends by Year across three datasets, I created a global sea ice extent variable ("Global_Ice") using mutate() that contained the combined value of northern and southern "Extent".
+  *I tidied the sea ice dataset using pivot_wider in order to create separate columns for the north and south hemispheres. I did this because the measurements for both hemispheres were taken on the same day and I wanted to remove the redundant dates. I ended up doing this by separating the dataset by hemisphere, then merging again by "Year", "Month", and "Day" to produce a compact dataset. I also removed the "Source Data" column because I cited the source of this dataset separately. For the purpose of analyzing data trends by Year across three datasets, I created a global sea ice extent variable ("Global_Ice") using mutate() that contained the combined value of northern and southern "Extent".*
 
 ### Joining/Merging
 
@@ -87,83 +89,102 @@ anti_join(land_temp_data,CO2_data,by="Year") %>% summarize(n_distinct(Year))
 anti_join(land_temp_data,CO2_data,by="Year") %>% summarize(unique(Year))
 ```
 
-  Before joining all three datasets, the land temperature dataset had 3,192 rows, 266 distinct years, and 2820 distinct "LandAverageTemperature" measurements. The sea ice dataset had 13,177 rows, 42 distinct years, and 8344 distinct "Global Ice" measurements. The CO2 dataset had 62 rows, 62 distinct years, and 62 distinct "Average CO2" measurements. The sea ice and land temperature datasets had 38 years in common. The four years that did not overlap were 2016, 2017, 2018, and 2019. The sea ice and CO2 datasets had 42 years in common. The twenty years that did not overlap include 1959-1977 and the year 2020. The land temperature and CO2 datasets had 57 years in common. The 209 years that did not overlap range from 1750 to 1958.
-  To join the datasets I used inner_join because I only wanted to compare values that had a match across all three datasets. I also specified joining by "Year" because the land temperature and sea ice datasets both contained the variables "Month" and "Day" as well. After joining all three datasets, the number of rows in the complete dataset was 143,160. The reason this number is so large compared to the original datasets is because it also preserves the month and day values from each dataset. The complete dataset only contains 38 distinct years, which means that several years were dropped from each dataset. One issue that may arise from dropping observations is that the sample size is now significantly smaller, which means that observed trends in the data may not hold as much significance.
+  *Before joining all three datasets, the land temperature dataset had 3,192 rows, 266 distinct years, and 2,820 distinct "LandAverageTemperature" measurements. The sea ice dataset had 13,177 rows, 42 distinct years, and 8344 distinct "Global Ice" measurements. The CO2 dataset had 62 rows, 62 distinct years, and 62 distinct "Average CO2" measurements. The sea ice and land temperature datasets had 38 years in common. The four years that did not overlap were 2016, 2017, 2018, and 2019. The sea ice and CO2 datasets had 42 years in common. The twenty years that did not overlap include 1959-1977 and the year 2020. The land temperature and CO2 datasets had 57 years in common. The 209 years that did not overlap range from 1750 to 1958.*
+  
+  *To join the datasets I used inner_join because I only wanted to compare values that had a match across all three datasets. I also specified joining by "Year" because the land temperature and sea ice datasets both contained the variables "Month" and "Day" as well. After joining all three datasets, the number of rows in the complete dataset was 143,160. The reason this number is so large compared to the original datasets is because it also preserves the month and day values from each dataset. The complete dataset only contains 38 distinct years, which means that several years were dropped from each dataset. One issue that may arise from dropping observations is that the sample size is now significantly smaller, which means that observed trends in the data may not hold as much significance.*
 
-####  Wrangling
+###  Wrangling
 
 ```{R}
 #Sea Ice Data Wrangling
-complete_data %>% mutate("Global_Ice"=north+south) -> complete_data
 complete_data %>% group_by(Year) %>% summarize("Avg_Sea_Ice"=mean(Global_Ice)) -> Avg_Annual_Sea_Ice
 full_join(complete_data,Avg_Annual_Sea_Ice) -> complete_data
 complete_data %>% select(c(Year,Avg_Sea_Ice)) %>% arrange(desc(Avg_Sea_Ice)) %>% glimpse()
-complete_data %>% summarize("max_sea_ice_extent"=max(Avg_Sea_Ice),"min_sea_ice_extent"=min(Avg_Sea_Ice)) %>% glimpse() -> Min_Max_Sea_Ice
+complete_data %>% summarize("max_sea_ice_extent"=max(Avg_Sea_Ice),"min_sea_ice_extent"=min(Avg_Sea_Ice)) %>% glimpse() -> Max_Min_Sea_Ice
+complete_data %>% filter(Avg_Sea_Ice==max(Avg_Sea_Ice)) %>% select(Year) %>% summarize("Max_Sea_Ice_Year"=unique(Year))
+complete_data %>% filter(Avg_Sea_Ice==min(Avg_Sea_Ice)) %>% select(Year) %>% summarize("Min_Sea_Ice_Year"=unique(Year))
 complete_data %>% summarize("Avg_Sea_Ice_sd"=sd(Avg_Sea_Ice))
 complete_data %>% group_by(Year) %>% summarize("Global_Ice_sd"=sd(Global_Ice)) %>% glimpse() -> Annual_Sea_Ice_sd
-Avg_Annual_Sea_Ice %>% kable()
+Avg_Annual_Sea_Ice %>% kable(digits = 3, align = 'c')
 ```
+
+  *In order to look at the global sea ice extent per year I created the variable "Avg_Annual_Sea_Ice", which contains mean global sea ice extent per year, and merged it with the complete dataset. Then, I performed a series of summary statistics. Some interesting results include the maximum and minimum mean sea ice extent per year, which were 25.95x10^6 square km (in 1978) and 21.98x10^6 square km (in 2011) respectively. The standard deviation of the average annual sea ice coverage was 0.52x10^6 square km.*	
 
 ```{R}
 #Land Temperature Data Wrangling
 complete_data %>% group_by(Year) %>% summarize("Avg_Land_Temperature"=mean(LandAverageTemperature)) %>% glimpse()-> Avg_Annual_Land_Temperature
 full_join(complete_data,Avg_Annual_Land_Temperature) -> complete_data
 complete_data %>% select(c(Year,Avg_Land_Temperature)) %>% arrange(Avg_Land_Temperature) %>% glimpse()
-complete_data %>% summarize("max_land_temp"=max(Avg_Land_Temperature),"min_land_temp"=min(Avg_Land_Temperature)) %>% glimpse() -> Min_Max_Land_Temp
+complete_data %>% summarize("max_land_temp"=max(Avg_Land_Temperature),"min_land_temp"=min(Avg_Land_Temperature)) %>% glimpse() -> Max_Min_Land_Temp
+complete_data %>% filter(Avg_Land_Temperature==max(Avg_Land_Temperature)) %>% select(Year) %>% summarize("Max_Land_Temp_Year"=unique(Year))
+complete_data %>% filter(Avg_Land_Temperature==min(Avg_Land_Temperature)) %>% select(Year) %>% summarize("Min_Land_Temp_Year"=unique(Year))
 complete_data %>% summarize("Avg_Land_Temperature_sd"=sd(Avg_Land_Temperature))
 complete_data %>% group_by(Year) %>% summarize("Land_Average_Temperature_sd"=sd(LandAverageTemperature)) %>% glimpse() -> Annual_Land_Temperature_sd
-Avg_Annual_Land_Temperature %>% kable()
+Avg_Annual_Land_Temperature %>% kable(digits = 3, align = 'c')
 ```
+
+  *In order to look at the average land temperature per year I created the variable "Avg_Annual_Land_Temperature", which contains mean land temperature per year, and merged it with the complete dataset. Then, I performed a series of summary statistics. Some interesting results include the maximum and minimum average annual land temperatures, which were 9.83 degrees Celsius (in 2015) and 8.64 degrees Celsius (in 1982) respectively. The standard deviation of the average annual land temperature was 0.31 degrees Celsius.*
 
 ```{R}
 #CO2 Data Wrangling
 complete_data %>% select(Year,`Average CO2`) %>% arrange(`Average CO2`) %>% glimpse()
 complete_data %>% select(`Average CO2`) %>% arrange(`Average CO2`) %>% glimpse()
-complete_data %>% summarize("max_CO2"=max(`Average CO2`),"min_CO2"=min(`Average CO2`)) -> Min_Max_CO2
+complete_data %>% summarize("max_CO2"=max(`Average CO2`),"min_CO2"=min(`Average CO2`)) %>% glimpse() -> Max_Min_CO2
+complete_data %>% filter(`Average CO2`==max(`Average CO2`)) %>% select(Year) %>% summarize("Max_CO2_Year"=unique(Year))
+complete_data %>% filter(`Average CO2`==min(`Average CO2`)) %>% select(Year) %>% summarize("Min_CO2_Year"=unique(Year))
 complete_data  %>% summarize("CO2_sd"=sd(`Average CO2`))
 ```
+  *Some interesting results of the summary statistics of the average CO2 concentration include the maximum and minimum values, which were 401.01 ppm (in 2015) and 335.41 ppm (in 1978). The standard deviation of the average annual CO2 concentration was 17.71 ppm.*
+
+```{r}
+#Summary Statistics
+nacount<-function(x)sum(is.na(x))
+complete_data %>% summarize_all(nacount)
+complete_data %>% summarize(n())
+complete_data %>% summarize(n_distinct(LandMaxTemperature))
+complete_data %>% summarize(n_distinct(LandMinTemperature))
+complete_data %>% summarize(n_distinct(LandAndOceanAverageTemperature))
+complete_data %>% summarize(n_distinct(Year))
+complete_data %>% summarize(n_distinct(south))
+complete_data %>% summarize(n_distinct(north))
+complete_data %>% summarize(n_distinct(`Average CO2`))
+complete_data %>% summarize(n_distinct(Avg_Sea_Ice))
+complete_data %>% summarize(n_distinct(Avg_Land_Temperature))
+```
+
+### Visualizing
 
 ```{R}
-#Other Wrangling
+#Visualizing Preparation
 full_join(complete_data,Avg_Annual_Sea_Ice) -> complete_data
 full_join(complete_data,Avg_Annual_Land_Temperature) -> complete_data
 complete_data %>% mutate(Year=as.character(Year)) -> complete_data
 complete_data %>% mutate(Year=as.numeric(Year)) -> complete_data
-complete_data %>% summarize(n())
-complete_data %>% summarize(n_distinct(Year))
-complete_data %>% summarize(unique(Year))
-complete_data %>% summarize(unique(Year)) %>% glimpse()
-nacount<-function(x)sum(is.na(x))
-complete_data %>% summarize_all(nacount)
-complete_data %>% filter(`Average CO2`>mean(`Average CO2`)) %>% summarize(unique(Year))
-#use strngr!!!
 ```
-
-#### Visualizing
 
 ```{r}
 complete_data %>% ggplot(aes(`Average CO2`,Avg_Sea_Ice)) + geom_smooth(method="lm", color="black") + geom_point(aes(color=Year)) + scale_color_gradient(low="orange", high="purple") + ggtitle("Average Sea Ice vs Average CO2 Concentration Per Year") + xlab("Atmospheric CO2 Concentration (ppm)") + ylab("Average Global Sea Ice (10^6 km^2)") + scale_x_continuous(breaks=seq(330,410,10)) + theme(plot.title = element_text(hjust = 0.5))
 ```
 
-  Plot 1 shows the the comparison of average global sea ice and average atmospheric CO2 concentration per year from 1978 to 2015. Based on the linear regression line, there appears to be an inverse relationship between CO2 concentration and sea ice. This would support the idea that CO2 pollution contributes to climate change, which is thus causing sea ice to melt.
+  *Plot 1 shows the the comparison of average global sea ice and average atmospheric CO2 concentration per year from 1978 to 2015. Based on the linear regression line, there appears to be an inverse relationship between CO2 concentration and sea ice. This would support the idea that CO2 pollution contributes to climate change, which is thus causing sea ice to melt.*
 
 ```{r}
 complete_data %>% ggplot(aes(`Average CO2`,Avg_Land_Temperature)) + geom_smooth(method="lm", color="black") + geom_point(aes(color=Year)) + scale_color_gradient(low="green", high="blue") + ggtitle("Average Land Temperature vs Average CO2 Concentration Per Year") + xlab("Atmospheric CO2 Concentration (ppm)") + ylab("Average Land Temperature (Celsius)") + scale_x_continuous(breaks=seq(330,410,10)) + theme(plot.title = element_text(hjust = 0.5))
 ```
 
-  Plot 2 shows the comparison of average land temperature and average atmospheric CO2 concentration per year from 1978 to 2015. Based on the linear regression line there appears to be a direct relationship between land temperature and CO2 concentration. This would support the idea that CO2 pollution contributes to climate change and global warming.
+  *Plot 2 shows the comparison of average land temperature and average atmospheric CO2 concentration per year from 1978 to 2015. Based on the linear regression line there appears to be a direct relationship between land temperature and CO2 concentration. This would support the idea that CO2 pollution contributes to climate change and global warming.*
 
 ```{r}
-complete_data %>% ggplot(aes(Avg_Land_Temperature,Avg_Sea_Ice)) + geom_smooth(method="lm", color="black") + geom_point(aes(color=Year)) + ggtitle("Average Sea Ice vs Average Land Temperature Per Year") + xlab("Average Land Temperature (Celsius)") + ylab("Average Global Sea Ice (10^6 km^2)") + scale_x_continuous(breaks=seq(8,10,0.1)) + theme(plot.title = element_text(hjust = 0.5))
+complete_data %>% ggplot(aes(Avg_Land_Temperature,Avg_Sea_Ice)) + geom_smooth(method="lm", color="black") + geom_point(aes(color=Year),stat="summary") + ggtitle("Average Sea Ice vs Average Land Temperature Per Year") + xlab("Average Land Temperature (Celsius)") + ylab("Average Global Sea Ice (10^6 km^2)") + scale_x_continuous(breaks=seq(8,10,0.1)) + theme(plot.title = element_text(hjust = 0.5))
 ```
 
-  Plot 3 shows the comparison of average global sea ice and average land temperature per year from 1978 to 2015. Based on the linear regression line there appears to be an inverse relationship between sea ice coverage and land temperature. This is expected, since sea ice would melt decrease as temperature increases. However, this plot is an example of causation not equating correlation, since it is not land temperature increasing that is directly causing sea ice to melt. Both variables are simply effects of climate change.
+  *Plot 3 shows the comparison of average global sea ice and average land temperature per year from 1978 to 2015. Based on the linear regression line there appears to be an inverse relationship between sea ice coverage and land temperature. This is expected, since sea ice would melt decrease as temperature increases. However, this plot is an example of causation not equating correlation, since it is not land temperature increasing that is directly causing sea ice to melt. Both variables are simply effects of climate change.*
 
-#### Concluding Remarks
+### Concluding Remarks
 
-  The relationships seen between sea ice coverage, temperature, and CO2 concentration in this dataset support the idea of CO2 emissions causing climate change, which is thus causing global warming and the melting of sea ice.
+  *The relationships seen between sea ice coverage, temperature, and CO2 concentration in this dataset support the idea of CO2 emissions causing climate change, which is thus causing global warming and the melting of sea ice.*
 
-#### Data Citations
+### Data Citations
 
 Sea Ice Dataset: Cavalieri, D. J., C. L. Parkinson, P. Gloersen, and H. J. Zwally. 1996, updated yearly. Sea Ice Concentrations from Nimbus-7 SMMR and DMSP SSM/I-SSMIS Passive Microwave Data, Version 1. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. doi: https://doi.org/10.5067/8GQ8LZQVL0VL. [10/24/2021].
 
